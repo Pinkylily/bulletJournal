@@ -1,23 +1,31 @@
-import React from "react"
-import {Button} from "@mui/material";
+import React from "react";
+import { Button } from "@mui/material";
 
-type  MenuType = 'day' | 'month' | 'year'
+type MenuType = "day" | "month" | "year";
 
 interface IMenuButtonProps {
-    type: MenuType
-    icon: React.ReactNode
+  type: MenuType;
+  icon: React.ReactNode;
 
-    onClick(): void
+  onClick(): void;
 }
 
 const LABEL_BY_TYPE: Record<MenuType, string> = {
-    'day': 'Jour',
-    'month': 'Mois',
-    'year': 'Année',
-}
+  day: "Jour",
+  month: "Mois",
+  year: "Année",
+};
 
-const MenuButton: React.FunctionComponent<IMenuButtonProps> = ({type, icon, onClick}) => {
-    return <Button startIcon={icon} onClick={onClick}>{LABEL_BY_TYPE[type]}</Button>
-}
+const MenuButton: React.FunctionComponent<IMenuButtonProps> = ({
+  type,
+  icon,
+  onClick,
+}) => {
+  return (
+    <Button startIcon={icon} onClick={onClick}>
+      {LABEL_BY_TYPE[type]}
+    </Button>
+  );
+};
 
-export default MenuButton
+export default MenuButton;
