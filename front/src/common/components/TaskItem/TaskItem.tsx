@@ -10,7 +10,11 @@ const TaskItem: React.FunctionComponent<ITaskItemProps> = ({ title }) => {
   return (
     <ListItem>
       <BadgeItem />
-      <ListItemText primary={title} primaryTypographyProps={{ noWrap: true }} />
+      <ListItemText
+        primary={title}
+        primaryTypographyProps={{ noWrap: true }}
+        sx={{ marginLeft: "10px" }}
+    />
     </ListItem>
   );
 };
