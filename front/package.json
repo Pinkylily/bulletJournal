@@ -11,7 +11,12 @@
     "lint": "eslint \"src/**/*.{ts,tsx}\" --quiet",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky",
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,css,json,ts,tsx}": "eslint --cache --fix --max-warnings=0"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +38,8 @@
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
     "prettier": "^3.1.1",
     "storybook": "^7.6.7",
     "typescript": "^5.3.3",
