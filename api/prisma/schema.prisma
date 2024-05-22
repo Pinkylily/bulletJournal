@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model events {
+  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  creatorId  String       @db.Uuid
+  title       String      @db.VarChar(255)
+  description String?     @db.VarChar(255)
+  status      status_enum @default(active)
+  startAt     DateTime    @db.Timestamp(6)
+  endAt       DateTime    @db.Timestamp(6)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  users       users       @relation(fields: [creatorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tasks       tasks[]
+}
+
+model tasks {
+  id           String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  creatorId    String          @db.Uuid
+  title        String          @db.VarChar(255)
+  description  String?         @db.VarChar(255)
+  status       status_enum     @default(active)
+  done         Boolean         @default(false)
+  planDate     DateTime?       @db.Timestamp(6)
+  planDateType date_type_enum?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  eventId      String?         @db.Uuid
+  users        users           @relation(fields: [creatorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  events       events?         @relation(fields: [eventId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fullName  String    @db.VarChar(255)
+  email     String    @unique @db.VarChar(255)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  events    events[]
+  tasks     tasks[]
+}
+
+enum date_type_enum {
+  month
+  year
+  day
+  time
+}
+
+enum status_enum {
+  archived
+  active
+}
