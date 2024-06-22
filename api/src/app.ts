@@ -1,5 +1,7 @@
 import express from "express";
 import { eventRouter } from "./init";
+import { taskRouter } from "./init";
+
 import { errorHandlerMiddleware } from "./middleware/ErrorHandlerMiddleware";
 
 const app = express();
@@ -14,10 +16,11 @@ app.get("/", (req, res) => {
 
 app.use("/", eventRouter.router);
 
+app.use("/", taskRouter.router);
+
 app.use(errorHandlerMiddleware);
 
 // creates and starts a server for our API on a defined port
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
-
