@@ -1,12 +1,11 @@
 import { PrismaClient } from "@prisma/client";
-import { IEventDb } from "./Event.types";
+import { DataEventDbToCreate, DataEventDbToUpdate, IEventDb } from "./Event.types";
+import { STATUS_ENUM } from "../common/CommonTypes.types";
+import * as EventMapper from './EventMapper'
 
 interface IEventModelDependencies {
   prismaClient: PrismaClient;
 }
-
-type DataEventToUpdate = Omit<IEventDb, "id" | "creatorId">;
-type DataEventToCreate = Omit<IEventDb, "id">;
 
 export class EventModel {
   private readonly prismaClient: PrismaClient;
@@ -23,15 +22,19 @@ export class EventModel {
     return await this.prismaClient.events.findMany();
   }
 
-  public async createEvent(data: DataEventToCreate) {
-    return await this.prismaClient.events.create({ data });
+  public async createEvent(data: DataEventDbToCreate) {
+    const event = await this.prismaClient.events.create({ data });
+
+    return EventMapper.mapEventPrismaToEventDb(event)
   }
 
-  public async updateEvent(id: string, data: DataEventToUpdate) {
-    return await this.prismaClient.events.update({
+  public async updateEvent(id: string, data: DataEventDbToUpdate): Promise<IEventDb> {
+    const event = await this.prismaClient.events.update({
       where: { id },
       data,
     });
+
+    return EventMapper.mapEventPrismaToEventDb(event)
   }
 
   public async deleteEvent(id: string) {
