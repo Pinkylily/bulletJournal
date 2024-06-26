@@ -42,8 +42,8 @@ export class EventController {
     next: NextFunction,
   ) => {
     try {
-      const { data } = req.params;
-      const event = this.eventService.createEvent(data);
+      const data = req.body;
+      const event = await this.eventService.createEvent(data);
       res.json(event);
     } catch (e) {
       next(e);
@@ -56,7 +56,7 @@ export class EventController {
     next: NextFunction,
   ) => {
     try {
-      const { id, data } = req.params;
+      const { id, data } = req.body;
       const event = await this.eventService.updateEvent(id, data);
       res.json(event);
     } catch (e) {
@@ -72,7 +72,7 @@ export class EventController {
     try {
       const { id } = req.params;
       await this.eventService.deleteEvent(id);
-      res.send(200);
+      res.sendStatus(200);
     } catch (e) {
       next(e);
     }
